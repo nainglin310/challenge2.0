@@ -21,7 +21,13 @@ public class PlayerScript : MonoBehaviour
 
     public Text loseText;
 
+    public AudioSource musicSource;
 
+    public AudioClip musicClipOne;
+
+    public AudioClip musicClipTwo;
+
+    Animator anim;
 
 
     // Start is called before the first frame update
@@ -32,6 +38,8 @@ public class PlayerScript : MonoBehaviour
         SetLivesText();
         winText.text = "";
         loseText.text = "";
+        anim = GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
@@ -39,11 +47,40 @@ public class PlayerScript : MonoBehaviour
     {
         float hozMovement = Input.GetAxis("Horizontal");
         float vertMovement = Input.GetAxis("Vertical");
-        rd2d.AddForce(new Vector2(hozMovement * speed, vertMovement * speed));
+        rd2d.AddForce(new Vector2(hozMovement * speed, vertMovement * speed)); 
     }
+    void Update()
+    { 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            musicSource.clip = musicClipOne;
+            musicSource.Play();
+            musicSource.loop = true;
+            anim.SetInteger("State", 2);
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            anim.SetInteger("State", 1);
+        }
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            anim.SetInteger("State", 0);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            anim.SetInteger("State", 1);
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            anim.SetInteger("State", 0);
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            anim.SetInteger("State", 0);
+        }
 
-    private void Update()
-    {
+
+
         if (Input.GetKey("escape"))
         {
             Application.Quit();
@@ -73,6 +110,10 @@ public class PlayerScript : MonoBehaviour
         if (scoreValue >= 8)
         {
             winText.text = "You Win! Game created by Naing Lin.";
+            musicSource.Stop();
+            musicSource.clip = musicClipTwo;
+            musicSource.loop = false;
+            musicSource.Play();
         }
         if (scoreValue == 4)
         {
