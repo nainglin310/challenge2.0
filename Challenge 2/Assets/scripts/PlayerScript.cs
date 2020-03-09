@@ -70,9 +70,15 @@ public class PlayerScript : MonoBehaviour
     void SetScoreText()
     {
         scoreText.text = "Score: " + scoreValue.ToString();
-        if (scoreValue >= 4)
+        if (scoreValue >= 8)
         {
             winText.text = "You Win! Game created by Naing Lin.";
+        }
+        if (scoreValue == 4)
+        {
+            transform.position = new Vector2(39.0f, -3.81f);
+            livesValue = 3;
+            SetLivesText();
         }
     }
     void SetLivesText()
@@ -81,6 +87,7 @@ public class PlayerScript : MonoBehaviour
         if (livesValue <= 0)
         {
             loseText.text = "You Lose! Game created by Naing Lin.";
+            Destroy(gameObject);
         }
     }
 
